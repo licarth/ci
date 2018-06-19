@@ -25,4 +25,4 @@ RUN curl -LO https://github.com/goeuro/myke/releases/download/v1.0.0/myke_linux_
 
 #git
 RUN git config --global user.email "support@opla.ai" \
-    git config --global user.name "CircleCI"
+    && git config --global user.name "CircleCI"
