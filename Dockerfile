@@ -26,3 +26,6 @@ RUN curl -LO https://github.com/goeuro/myke/releases/download/v1.0.0/myke_linux_
 #git
 RUN git config --global user.email "support@opla.ai" \
     && git config --global user.name "CircleCI"
+
+RUN sh -c "curl https://raw.githubusercontent.com/kadwanev/retry/master/retry -o /usr/local/bin/retry && chmod +x /usr/local/bin/retry"
+
