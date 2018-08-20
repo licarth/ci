@@ -1,8 +1,12 @@
 FROM google/cloud-sdk
 
+ARG TERRAFORM_VERSION=0.11.7
+ARG MYKE_VERSION=1.0.0
+
+#tools
 RUN \
     apt-get update \
-    && apt-get -y install gettext-base jq \
+    && apt-get -y install gettext-base jq unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -18,7 +22,7 @@ RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get >g
     && helm init --client-only
 
 #myke
-RUN curl -LO https://github.com/goeuro/myke/releases/download/v1.0.0/myke_linux_amd64 \
+RUN curl -LO https://github.com/goeuro/myke/releases/download/v${MYKE_VERSION}/myke_linux_amd64 \
     && chmod +x myke_linux_amd64 \
     && mv myke_linux_amd64 /usr/local/bin/myke \
     && myke --version
@@ -27,5 +31,11 @@ RUN curl -LO https://github.com/goeuro/myke/releases/download/v1.0.0/myke_linux_
 RUN git config --global user.email "support@opla.ai" \
     && git config --global user.name "CircleCI"
 
-RUN sh -c "curl https://raw.githubusercontent.com/kadwanev/retry/master/retry -o /usr/local/bin/retry && chmod +x /usr/local/bin/retry"
+#terraform
+RUN curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && mv terraform /usr/local/bin/
 
+#openstack
+RUN pip install python-openstackclient
+
+#retry
+RUN sh -c "curl https://raw.githubusercontent.com/kadwanev/retry/master/retry -o /usr/local/bin/retry && chmod +x /usr/local/bin/retry"
