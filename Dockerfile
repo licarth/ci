@@ -6,7 +6,7 @@ ARG MYKE_VERSION=1.0.0
 #tools
 RUN \
     apt-get update \
-    && apt-get -y install gettext-base jq unzip \
+    && apt-get -y install gettext-base jq unzip uuid-runtime \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
