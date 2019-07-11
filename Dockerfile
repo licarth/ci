@@ -1,7 +1,9 @@
 FROM google/cloud-sdk:alpine
 
 ARG MYKE_VERSION=1.0.0
-ARG DOCKER_VERSION=17.03.0-ce
+ARG DOCKER_VERSION=18.09.6
+ARG HELM_VERSION=v2.14.0
+ENV HELM_FILENAME=helm-${HELM_VERSION}-linux-amd64.tar.gz
 
 RUN apk add openssl gettext jq
 
@@ -11,11 +13,10 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
     && mv ./kubectl /usr/local/bin/kubectl 
 
 #helm
-RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get >get_helm.sh \
-    && chmod 700 get_helm.sh \
-    && ./get_helm.sh \
-    && helm init --client-only \
-    && rm get_helm.sh
+RUN curl -L https://storage.googleapis.com/kubernetes-helm/${HELM_FILENAME} | tar xz \
+    && mv linux-amd64/helm /bin/helm \
+    && rm -rf linux-amd64 \
+    && helm init --client-only
 
 #myke
 RUN curl -LO https://github.com/goeuro/myke/releases/download/v${MYKE_VERSION}/myke_linux_amd64 \
@@ -29,6 +30,10 @@ RUN sh -c "curl https://raw.githubusercontent.com/kadwanev/retry/master/retry -o
 #docker 
 RUN curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz \
     && tar -xz -C /tmp -f /tmp/docker-$VER.tgz \
-    && mv /tmp/docker/* /usr/local/bin/
+    && mv /tmp/docker/* /usr/local/bin/ && docker version || true
 
+#circleci CLI
+RUN curl -fLSs https://circle.ci/cli | bash
+
+#npm
 RUN apk add --no-cache --update nodejs nodejs-npm
