@@ -37,3 +37,6 @@ RUN curl -fLSs https://circle.ci/cli | bash
 
 #npm
 RUN apk add --no-cache --update nodejs nodejs-npm
+
+RUN gcloud components install beta cloud_sql_proxy
+
