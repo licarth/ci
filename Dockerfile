@@ -1,4 +1,4 @@
-FROM google/cloud-sdk:alpine
+FROM google/cloud-sdk:251.0.0-alpine
 
 ARG MYKE_VERSION=1.0.0
 ARG DOCKER_VERSION=18.09.6
