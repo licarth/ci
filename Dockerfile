@@ -2,8 +2,7 @@ FROM google/cloud-sdk:251.0.0-alpine
 
 ARG MYKE_VERSION=1.0.0
 ARG DOCKER_VERSION=18.09.6
-ARG HELM_VERSION=v2.14.0
-ENV HELM_FILENAME=helm-${HELM_VERSION}-linux-amd64.tar.gz
+ARG HELM_VERSION=v3.2.4
 
 RUN apk add openssl gettext jq
 
@@ -13,10 +12,10 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
     && mv ./kubectl /usr/local/bin/kubectl 
 
 #helm
-RUN curl -L https://storage.googleapis.com/kubernetes-helm/${HELM_FILENAME} | tar xz \
+RUN curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar xz \
     && mv linux-amd64/helm /bin/helm \
     && rm -rf linux-amd64 \
-    && helm init --client-only
+    && helm version
 
 #myke
 RUN curl -LO https://github.com/goeuro/myke/releases/download/v${MYKE_VERSION}/myke_linux_amd64 \
