@@ -40,3 +40,6 @@ RUN apk add --no-cache --update nodejs nodejs-npm
 
 #helmfile
 RUN wget -qO /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_linux_amd64 && chmod +x /usr/local/bin/helmfile && helmfile --version
+
+#helm-diff
+RUN helm plugin install https://github.com/databus23/helm-diff
