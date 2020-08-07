@@ -3,6 +3,7 @@ FROM google/cloud-sdk:251.0.0-alpine
 ARG MYKE_VERSION=1.0.0
 ARG DOCKER_VERSION=18.09.6
 ARG HELM_VERSION=v3.2.4
+ARG HELMFILE_VERSION=v0.125.0
 
 RUN apk add openssl gettext jq
 
@@ -37,5 +38,5 @@ RUN curl -fLSs https://circle.ci/cli | bash
 #npm
 RUN apk add --no-cache --update nodejs nodejs-npm
 
-RUN gcloud components install beta cloud_sql_proxy
-
+#helmfile
+RUN wget -qO /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_linux_amd64 && chmod +x /usr/local/bin/helmfile && helmfile --version
