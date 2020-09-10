@@ -43,3 +43,6 @@ RUN wget -qO /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases
 
 #helm-diff
 RUN helm plugin install https://github.com/databus23/helm-diff
+
+#ssh
+RUN apk add nmap-ncat openssh rsync
